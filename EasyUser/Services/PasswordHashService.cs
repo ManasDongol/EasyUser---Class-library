@@ -1,20 +1,21 @@
 ﻿using System.Security.Cryptography;
+using EasyUser.Interfaces;
 
 
 namespace EasyUser.Services;
 //password hasher
-public class PasswordHashService
+public class PasswordHashService  : PasswordInterface
 {
     
     private const int SaltSize = 16; // 128-bit
     private const int HashSize = 32; // 256-bit
     private const int Iterations = 600_000; 
-    private static readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA512;
+    private  readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA512;
     private const int OutputLength = HashSize + SaltSize;
     
     
     //return type, a tuple of type byte array, byte array
-    public static (byte[] hash,byte[] salt) HashPassword(string password)
+    public  (byte[] hash,byte[] salt) HashPassword(string password)
     {
         byte[] passwordBytes = (Byte[])password.Clone();
         byte[] salt = RandomNumberGenerator.GetBytes(SaltSize);
@@ -23,14 +24,14 @@ public class PasswordHashService
     }
     
     //update existing password
-    public static (byte[] hash,byte[] salt) ReHashPassword(string password,byte[] salt)
+    public  (byte[] hash,byte[] salt) ReHashPassword(string password,byte[] salt)
     {
         byte[] passwordBytes = (Byte[])password.Clone();
         byte[] Hash = Rfc2898DeriveBytes.Pbkdf2(passwordBytes, salt, Iterations, Algorithm,OutputLength);
         return (Hash, salt);
     }
 
-    public static bool CheckPassword(byte[] hash, byte[] salt,string password)
+    public  bool CheckPassword(byte[] hash, byte[] salt,string password)
     {
         
         byte[] passwordBytes = (Byte[])password.Clone();
@@ -42,5 +43,11 @@ public class PasswordHashService
         }
 
         return false;
+    }
+    
+    public bool changePassword( string newPassword,byte[] salt)
+    {
+        ReHashPassword(newPassword, salt);
+        return true;
     }
 }

@@ -1,11 +1,19 @@
 ﻿using EasyUser.Interfaces;
+using EasyUser.Services;
 
 namespace EasyUser;
 
 // summary
 // main class
-public interface EasyUser
+public class IEasyUser
 {
-   UserInterface userInterface { get; }
-   PasswordInterface passwordInterface { get; }
+   public UserInterface userInterface { get; }
+   public PasswordInterface passwordInterface { get; }
+
+   public IEasyUser()
+   {
+      userInterface = new UserService();
+      passwordInterface = new PasswordHashService();
+
+   }
 }
