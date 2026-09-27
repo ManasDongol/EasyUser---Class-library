@@ -2,7 +2,7 @@
 
 namespace EasyUser.Services;
 
-public class UserService : UserInterface
+public class UserService : IUserInterface
 {
     public User CreateUser(string username, string password, string? email,string? phonenumber,int? age, Byte[]? photo)
     {
@@ -23,12 +23,18 @@ public class UserService : UserInterface
     {
     }
 
-    public void EditUser()
+    public void GetUser()
     {
     }
 
-    public void GetUser()
+    public User EditUser(User currentUser,string? username, string? password, string? email,string? phonenumber,int? age, Byte[]? photo)
     {
-        
+       currentUser.UserName = username??currentUser.UserName;
+       currentUser.Email = email??currentUser.Email;
+       currentUser.Phone = phonenumber??currentUser.Phone;  
+       currentUser.Age = age??currentUser.Age;
+       
+       return currentUser;
+    
     }
 }
