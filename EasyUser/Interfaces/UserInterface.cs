@@ -2,7 +2,7 @@
 
 namespace EasyUser.Interfaces;
 
-public interface UserInterface
+public interface IUserInterface
 {
     public abstract User CreateUser(
             string username, 
@@ -13,7 +13,16 @@ public interface UserInterface
             Byte[]? photo=null)
         ;
     public abstract void DeleteUser();
-    public abstract void EditUser();
+    public abstract User EditUser(
+        User currentUser,
+        string? username, 
+        string? password, 
+        string? email=null,
+        string? phonenumber=null,
+        int? age=null, 
+        Byte[]? photo=null
+        
+        );
     public abstract void GetUser();
  
  
